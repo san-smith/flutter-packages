@@ -3,20 +3,23 @@
 // found in the LICENSE file.
 
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:web/helpers.dart';
 import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 import 'package:webview_flutter_web/webview_flutter_web.dart';
 
 import 'web_webview_controller_test.mocks.dart';
 
 @GenerateMocks(<Type>[], customMocks: <MockSpec<Object>>[
-  MockSpec<HttpRequest>(onMissingStub: OnMissingStub.returnDefault),
+  MockSpec<XMLHttpRequest>(
+    as: #MockXMLHttpRequest,
+    onMissingStub: OnMissingStub.returnDefault,
+  ),
   MockSpec<HttpRequestFactory>(onMissingStub: OnMissingStub.returnDefault),
 ])
 void main() {
@@ -105,7 +108,7 @@ void main() {
           httpRequestFactory: mockHttpRequestFactory,
         ));
 
-        final MockHttpRequest mockHttpRequest = MockHttpRequest();
+        final MockXMLHttpRequest mockHttpRequest = MockXMLHttpRequest();
         when(mockHttpRequest.getResponseHeader('content-type'))
             .thenReturn('text/plain');
         when(mockHttpRequest.responseText).thenReturn('test data');
@@ -115,7 +118,7 @@ void main() {
           method: anyNamed('method'),
           requestHeaders: anyNamed('requestHeaders'),
           sendData: anyNamed('sendData'),
-        )).thenAnswer((_) => Future<HttpRequest>.value(mockHttpRequest));
+        )).thenAnswer((_) => Future<XMLHttpRequest>.value(mockHttpRequest));
 
         await controller.loadRequest(LoadRequestParams(
           uri: Uri.parse('https://flutter.dev'),
@@ -147,7 +150,7 @@ void main() {
 
         final Encoding iso = Encoding.getByName('latin1')!;
 
-        final MockHttpRequest mockHttpRequest = MockHttpRequest();
+        final MockXMLHttpRequest mockHttpRequest = MockXMLHttpRequest();
         when(mockHttpRequest.responseText)
             .thenReturn(String.fromCharCodes(iso.encode('España')));
         when(mockHttpRequest.getResponseHeader('content-type'))
@@ -158,7 +161,7 @@ void main() {
           method: anyNamed('method'),
           requestHeaders: anyNamed('requestHeaders'),
           sendData: anyNamed('sendData'),
-        )).thenAnswer((_) => Future<HttpRequest>.value(mockHttpRequest));
+        )).thenAnswer((_) => Future<XMLHttpRequest>.value(mockHttpRequest));
 
         await controller.loadRequest(LoadRequestParams(
           uri: Uri.parse('https://flutter.dev'),
@@ -179,7 +182,7 @@ void main() {
           httpRequestFactory: mockHttpRequestFactory,
         ));
 
-        final MockHttpRequest mockHttpRequest = MockHttpRequest();
+        final MockXMLHttpRequest mockHttpRequest = MockXMLHttpRequest();
         when(mockHttpRequest.getResponseHeader('content-type'))
             .thenReturn('text/html');
         when(mockHttpRequest.responseText).thenReturn('#');
@@ -188,7 +191,7 @@ void main() {
           method: anyNamed('method'),
           requestHeaders: anyNamed('requestHeaders'),
           sendData: anyNamed('sendData'),
-        )).thenAnswer((_) => Future<HttpRequest>.value(mockHttpRequest));
+        )).thenAnswer((_) => Future<XMLHttpRequest>.value(mockHttpRequest));
 
         await controller.loadRequest(LoadRequestParams(
           uri: Uri.parse('https://flutter.dev'),

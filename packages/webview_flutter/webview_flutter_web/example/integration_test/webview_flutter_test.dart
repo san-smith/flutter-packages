@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:html' as html;
 import 'dart:io';
 
 // FIX (dit): Remove these integration tests, or make them run. They currently never fail.
@@ -14,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:web/web.dart' as web;
 import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 import 'package:webview_flutter_web/webview_flutter_web.dart';
 
@@ -51,8 +51,8 @@ Future<void> main() async {
     );
 
     // Assert an iframe has been rendered to the DOM with the correct src attribute.
-    final html.IFrameElement? element =
-        html.document.querySelector('iframe') as html.IFrameElement?;
+    final web.HTMLIFrameElement? element =
+        web.document.querySelector('iframe') as web.HTMLIFrameElement?;
     expect(element, isNotNull);
     expect(element!.src, primaryUrl);
   });
@@ -76,8 +76,8 @@ Future<void> main() async {
     );
 
     // Assert an iframe has been rendered to the DOM with the correct src attribute.
-    final html.IFrameElement? element =
-        html.document.querySelector('iframe') as html.IFrameElement?;
+    final web.HTMLIFrameElement? element =
+        web.document.querySelector('iframe') as web.HTMLIFrameElement?;
     expect(element, isNotNull);
     expect(
       element!.src,

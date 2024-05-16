@@ -3,13 +3,13 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:html' as html;
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:web/helpers.dart' as web;
 import 'package:webview_flutter_web_example/legacy/web_view.dart';
 
 void main() async {
@@ -52,8 +52,8 @@ void main() async {
     await controllerCompleter.future;
 
     // Assert an iframe has been rendered to the DOM with the correct src attribute.
-    final html.IFrameElement? element =
-        html.document.querySelector('iframe') as html.IFrameElement?;
+    final web.HTMLIFrameElement? element =
+        web.document.querySelector('iframe') as web.HTMLIFrameElement?;
     expect(element, isNotNull);
     expect(element!.src, primaryUrl);
   });
@@ -77,8 +77,8 @@ void main() async {
     await controller.loadUrl(secondaryUrl);
 
     // Assert an iframe has been rendered to the DOM with the correct src attribute.
-    final html.IFrameElement? element =
-        html.document.querySelector('iframe') as html.IFrameElement?;
+    final web.HTMLIFrameElement? element =
+        web.document.querySelector('iframe') as web.HTMLIFrameElement?;
     expect(element, isNotNull);
     expect(element!.src, secondaryUrl);
   });
